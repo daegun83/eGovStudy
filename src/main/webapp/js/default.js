@@ -1,3 +1,8 @@
+/*
+ * 2016.10.16
+ * Javascript 별개파일로 분리
+ * */
+
 $(function(){
     	if($('.btn_login')){
     		$( "#dialog" ).dialog({
