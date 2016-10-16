@@ -1,3 +1,128 @@
 
 홑따옴표 : 프로그램을 실행하지 않음. / 자바에서는 사용 불가.
 쌍따옴표 : 프로그램을 실행.
+
+
+메소드 만들고 호출 방법
+
+public static void mainl (String[] args){
+	retrun
+}
+
+이것은 메소드이다 main 이라고 하는것이 메소드인 것이다. void main(String[] args)
+
+package org.opentutorials.javatutorials.method;
+ 
+public class MethodDemo1 {
+    public static void numbering() {
+        int i = 0;
+        while (i < 10) {
+            System.out.println(i);
+            i++;
+        }
+    } ----------------------------------여기 까지가 정의
+ 
+    public static void main(String[] args) {
+        numbering();
+    } ---------------------------------- 호출
+    
+    
+    
+  main 메소드는 규칙이다 
+  
+  
+  매개변수와 인자
+  
+  메소드의 입력 값은 매개변수(parameter)를 통해서 이루어진다. 
+  
+  package org.opentutorials.javatutorials.method;
+ 
+public class MethodDemo4 {
+    public static void numbering(int limit) {
+        int i = 0;
+        while (i < limit) {
+            System.out.println(i);
+            i++;
+        }
+    }
+ 
+    public static void main(String[] args) {
+        numbering(5);
+    }
+}
+
+  limit .. 메소드가 호출될 때 limit이라는 변수의 값이 된다. 이 값은 메소드 numbering의 중골호 안에서만 사용할수 있다.
+  
+  retrun
+  
+  package org.opentutorials.javatutorials.method;
+ 
+public class MethodDemo6 {
+    public static String numbering(int init, int limit) {
+        int i = init;
+        // 만들어지는 숫자들을 output이라는 변수에 담기 위해서 변수에 빈 값을 주었다.
+        String output = "";
+        while (i < limit) {
+            // 숫자를 화면에 출력하는 대신 변수 output에 담았다.
+            output += i;
+            i++;
+        }
+        // 중요!!! output에 담겨 있는 문자열을 메소드 외부로 반환하려면 아래와 같이 return 키워드 뒤에 반환하려는 값을
+        // 배치하면 된다.
+        return output;
+    }
+ 
+    public static void main(String[] args) {
+        // 메소드 numbering이 리턴한 값이 변수 result에 담긴다.
+        String result = numbering(1, 5);
+        // 변수 result의 값을 화면에 출력한다.
+        System.out.println(result);
+    }
+}
+
+
+  
+  클래스와 인스턴스 그리고 객체
+  -----     -------
+  설계도     제품
+  메소드정의    호출 (비유를 하자면)
+  
+  
+  
+  메소드화
+  
+  package org.opentutorials.javatutorials.object;
+ 
+public class CalculatorDemo {
+ 
+    public static void main(String[] args) {
+        // 아래의 로직이 1000줄 짜리의 복잡한 로직이라고 가정하자.
+        System.out.println(10 + 20);
+        System.out.println(20 + 40);
+    }
+ 
+}
+  
+프로그래밍의 기본은 중복을 제거 하는 것이다. 중복을 제거하기 위한 방법으로 고려해볼수 있는 기능이 메소드이다.
+
+로직을 만들면 코드의 양을 줄일 수 있고, 문제가 생길시 원인을 쉽게 찾을수 있음
+
+밑에 코드는 위의 코드를 메소드화 시킨것
+
+package org.opentutorials.javatutorials.object;
+ 
+public class CalculatorDemo2 {
+ 
+    public static void sum(int left, int right) {
+        System.out.println(left + right);
+    }
+ 
+    public static void main(String[] args) {
+        sum(10, 20);
+        sum(20, 40);
+    }
+ 
+}
+
+
+  
