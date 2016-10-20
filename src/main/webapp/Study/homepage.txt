@@ -1,0 +1,59 @@
+happyrentcar
+
+1.controller 에서
+
+	//추가
+	
+	@RequestMapping(value = "/egovSampleHappy.do")
+	public String selectSampleHappy(@RequestParam HashMap<String, Object> searchVO, ModelMap model) throws Exception {
+		
+		return "sample/egovSampleHappy";
+	}//END
+	
+	@RequestMapping(value = "/selectSampleDetail.do")
+	public String selectSampleDetail(@RequestParam HashMap<String, Object> searchVO, ModelMap model) throws Exception {
+		
+		List<?> selectSampleCarList = sampleService.selectSampleCarList(searchVO);
+		model.addAttribute("resultList", selectSampleCarList);
+		
+		return "sample/selectSampleDetail";
+	}//END
+	
+	컨드롤러에서 위에 소스를 생성하면 화면서 나타남
+	
+	화면을 띄우기 위해서 
+	
+	----------------------------------------------------------------------------------------------------
+	EgovSampleService.java
+	
+	List<?>selectSampleCarList(@RequestParam HashMap<String, Object> searchVO) throws Exception;
+	
+	-----------------------------------------------------------------------------------------------------
+	EgovSampleServiceImpl
+	
+		//추가
+	@Override
+	public List<?> selectSampleCarList(@RequestParam HashMap<String, Object> searchVO) throws Exception{
+		return sampleDAO.selectSampleCarList(searchVO);
+	}//END 생성을 함  
+	
+	 ----------------------------------------------------------------------------------------------------
+	 
+	 SampleDAO.java
+	 
+	 //추가
+	public List<?> selectSampleCarList(@RequestParam HashMap<String, Object>  searchVO) throws Exception {
+		return list("sampleDAO.selectSampleCarList", searchVO);
+	}//END 생성
+	
+	-----------------------------------------------------------------------------------------------------
+	
+	jsp에서 "css, "js, "image를 "/css, "/js, "/image 수정
+	
+	그리고 ajax url  egovSampleDetail.do 수정
+	
+	proprtis 에서 web projectsetting 주소를 / 수정
+	
+	tomcat에서 path / 수정  
+	
+	-----------------------------------------------------------------------------------------------------
