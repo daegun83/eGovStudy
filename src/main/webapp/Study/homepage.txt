@@ -57,3 +57,101 @@ happyrentcar
 	tomcat에서 path / 수정  
 	
 	-----------------------------------------------------------------------------------------------------
+	
+	목록클릭시 화면에 나타는 데이터 JSON 처리 하는 소스
+	
+	먼저 컨트롤에서 
+	
+	//추가
+	@RequestMapping(value = "/egovSampleJson.do")
+	public String egovSampleJson(@RequestParam HashMap <String, Object> searchVO, ModelMap model) throws Exception {
+
+		for (Map.Entry<String, Object> entry : searchVO.entrySet()) {
+			System.out.println("Key : " + entry.getKey() + " Value : " + entry.getValue());
+		}
+		
+		List<?> sampleList = sampleService.selectCarList(searchVO);
+		model.addAttribute("resultList", sampleList);
+
+		return "sample/egovSampleJson";
+	}//end
+	
+	이것을 추가 해주고
+	
+	jsp파일을 만들어서...
+	
+	{
+	"resultList": [
+	<c:forEach var="result" items="${resultList}" varStatus="status">
+		{
+			"id": "${result.id}",
+			"title": "${result.title}",
+			"car_type_name": "${result.car_type_name}",
+			"car_fuel_name": "${result.car_fuel_name}",
+			"car_mileage_name": "${result.car_mileage_name}"
+		}<c:if test="${!status.last }">, </c:if>
+	</c:forEach>
+	]
+}
+
+sql에서 넘어온 파라미터 값을 배열로 만들어서  그값을 텍스트에 하나하나씩 보낸다...
+
+var stringData = $("#carForm").serialize();
+	$.ajax(
+		{
+			type:"post",
+			dataType:"html",
+			url: "/egovSampleDetail.do",
+			data: stringData,
+			success: function(data) {
+				if ( data == "block" ) {
+					alert("홈페이지 예약이 가능한 기간이 아닙니다. 자세한 예약상담은 고객센터(1644-7935)로 문의하세요.");
+					location.href="/rental";
+				}
+				if ($(window).width() < 900)
+				    //console.log('a');
+					techbug();
+				$('#contentsWrap').empty().hide();
+				$('#contentsWrap').append(data).fadeIn(0);					
+				searchFlag = true;
+
+				$.ajax(
+						{
+							type:"post",
+							dataType:"html",
+							url: "/egovSampleJson.do",
+							data: stringData,
+							success: function(data) {
+								var obj = $.parseJSON(data);
+								//alert(obj);
+
+								$.each(obj, function(key) {
+									//alert(key + ':' + obj[key]);
+									var array = obj[key];
+									$.each(array, function(key2) {
+										//alert(key2 + ':' + array[key2]);
+										var detail = array[key2];
+										$("#car_type_name_" + detail.id).text(detail.car_type_name);
+										$("#title_" + detail.id).text(detail.title);
+										$("#car_fuel_name_" + detail.id).text(detail.car_fuel_name);
+										$("#car_mileage_name_" + detail.id).text(detail.car_mileage_name);
+
+										//$.each(detail, function(key3) {
+										//	alert(key3 + ':' + detail[key3]); 
+										//});
+									});
+								});
+								return;
+							}
+						}
+					);
+				return;
+			}
+		}
+	);
+}
+
+이소스는 2번 리턴을 하여 마지막에 배열로된 값을 0번째부터 하나씩 텍스트에 담는다.
+
+-------------------------------------------------------------------------------------
+
